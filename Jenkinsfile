@@ -1,10 +1,11 @@
 pipeline {
-    agent any  /
-    / Use any available agent
+    agent any  // Use any available agent
     def gradleHome = tool name: 'gradle-8.6', type: 'gradle'
 withEnv(["PATH+GRADLE=${gradleHome}/bin"]) {
     sh 'gradle build'
 }
+
+
 
 
     tools {
