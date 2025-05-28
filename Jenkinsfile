@@ -1,17 +1,11 @@
 pipeline {
-    agent any  // Use any available agent
-    def gradleHome = tool name: 'gradle-8.6', type: 'gradle'
-withEnv(["PATH+GRADLE=${gradleHome}/bin"]) {
-    sh 'gradle build'
-}
-
-
-
+    agent any
 
     tools {
-        gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
-        jdk 'JDK'
+        gradle 'Gradle'  // The Gradle installation name in Jenkins Global Tool Config
+        jdk 'JDK'        // The JDK installation name in Jenkins Global Tool Config
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,26 +15,24 @@ withEnv(["PATH+GRADLE=${gradleHome}/bin"]) {
 
         stage('Build') {
             steps {
+                // Use gradle wrapper to build (preferred)
                 sh './gradlew build'
-  // Run Maven build
             }
         }
 
-       stage('Test') {
-           steps {
-               sh 'gradle test'  // Run unit tests
-           }
+        stage('Test') {
+            steps {
+                // Use gradle wrapper to run tests
+                sh './gradlew test'
+            }
         }
 
-              
         stage('Run Application') {
             steps {
-                // Start the JAR application
-                sh 'gradle run'
+                // Run the app via gradle wrapper
+                sh './gradlew run'
             }
         }
-
-        
     }
 
     post {
@@ -52,4 +44,3 @@ withEnv(["PATH+GRADLE=${gradleHome}/bin"]) {
         }
     }
 }
-
