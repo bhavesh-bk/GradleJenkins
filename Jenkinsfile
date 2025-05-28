@@ -14,7 +14,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'gradle build'  // Run Maven build
+                sh './gradlew build'
+  // Run Maven build
             }
         }
 
